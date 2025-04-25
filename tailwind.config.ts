@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,24 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// EcoEye custom colors
+				eco: {
+					blue: {
+						light: '#D3E4FD',
+						DEFAULT: '#1EAEDB',
+						dark: '#0FA0CE'
+					},
+					green: {
+						light: '#F2FCE2',
+						DEFAULT: '#4CAF50',
+						dark: '#388E3C'
+					},
+					gray: {
+						light: '#F6F6F7',
+						DEFAULT: '#8A898C',
+						dark: '#403E43'
+					}
 				}
 			},
 			borderRadius: {
@@ -84,11 +103,27 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-slow': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.7' }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'wave': {
+					'0%': { transform: 'translateX(0)' },
+					'50%': { transform: 'translateX(-25%)' },
+					'100%': { transform: 'translateX(0)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
+				'float': 'float 6s ease-in-out infinite',
+				'wave': 'wave 10s ease-in-out infinite'
 			}
 		}
 	},

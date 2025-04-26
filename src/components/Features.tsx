@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bolt, Droplet, Gauge, Bot, Cpu, CloudCog } from 'lucide-react';
+import { Bolt, Droplet, Gauge, Bot, Cpu, CloudCog, FileText } from 'lucide-react';
 
 const Features = () => {
   const features = [
@@ -34,6 +33,11 @@ const Features = () => {
       icon: <Bot className="h-10 w-10 text-eco-green p-2 bg-eco-green-light rounded-lg" />,
       title: "Smart Recommendations",
       description: "Receive personalized tips to reduce consumption based on your unique usage patterns"
+    },
+    {
+      icon: <FileText className="h-10 w-10 text-white p-2 bg-gradient-to-r from-eco-blue to-eco-green rounded-lg" />,
+      title: "AI Insights Reporting",
+      description: "Receive comprehensive monthly reports with deep AI-generated insights, predicting future usage and suggesting personalized optimization strategies"
     }
   ];
 

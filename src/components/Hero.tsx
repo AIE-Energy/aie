@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Bolt, Droplet, Gauge } from 'lucide-react';
+import { Bolt, Droplet, Gauge, FileText } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -10,11 +10,11 @@ const Hero = () => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="relative z-10">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="gradient-text">Smart Monitoring</span>
-              <br />for Your Home Resources
+              <span className="gradient-text">AI-Powered</span>
+              <br />Resource Intelligence
             </h1>
             <p className="text-lg md:text-xl mb-8 text-eco-gray-dark max-w-lg">
-              EcoEye uses AI and Raspberry Pi to automatically track, analyze, and optimize your energy and water usage, saving you money while helping the environment.
+              EcoEye harnesses advanced AI to transform your resource consumption data into actionable insights, delivering personalized, intelligent recommendations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="bg-eco-blue hover:bg-eco-blue-dark text-white">
@@ -35,8 +35,8 @@ const Hero = () => {
                 <span className="text-sm">Water Monitoring</span>
               </div>
               <div className="flex items-center">
-                <Gauge className="h-5 w-5 text-eco-blue mr-2" />
-                <span className="text-sm">Real-time Alerts</span>
+                <FileText className="h-5 w-5 text-eco-blue mr-2" />
+                <span className="text-sm">AI Reports</span>
               </div>
             </div>
           </div>

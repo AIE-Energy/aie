@@ -24,6 +24,7 @@ const CTA = () => {
     additionalInfo: '',
     file: null as File | null,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const benefits = [
@@ -68,19 +69,53 @@ const CTA = () => {
     }
   };
 
+  const createStorageBucketIfNeeded = async () => {
+    try {
+      const { data: bucketList } = await supabase.storage.listBuckets();
+      
+      if (!bucketList?.find(bucket => bucket.name === 'utility_bills')) {
+        const { error } = await supabase.storage.createBucket('utility_bills', {
+          public: true,
+          fileSizeLimit: 10 * 1024 * 1024
+        });
+        
+        if (error) throw error;
+        console.log('Created utility_bills bucket');
+      }
+    } catch (error) {
+      console.error('Error checking/creating bucket:', error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
     try {
+      await createStorageBucketIfNeeded();
+      
       let filePath = null;
+      let fileUrl = null;
+      
       if (formData.file) {
         const fileExt = formData.file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
+        
+        const { error: uploadError, data: fileData } = await supabase.storage
           .from('utility_bills')
           .upload(fileName, formData.file);
           
         if (uploadError) throw uploadError;
         filePath = fileName;
+        
+        const { data: publicURLData } = supabase.storage
+          .from('utility_bills')
+          .getPublicUrl(fileName);
+          
+        if (publicURLData) {
+          fileUrl = publicURLData.publicUrl;
+          console.log('File uploaded successfully. Public URL:', fileUrl);
+        }
       }
 
       const { error: insertError } = await supabase
@@ -106,13 +141,25 @@ const CTA = () => {
         WaterUsage: auditType !== 'electricity' ? parseFloat(formData.waterUsage) : null,
         MonthlyBill: parseFloat(formData.monthlyBill),
         AdditionalInfo: formData.additionalInfo,
-        HasAttachment: !!filePath
+        HasAttachment: !!filePath,
+        file_url: fileUrl
       });
 
       toast({
         title: "Audit request submitted",
         description: "Thank you for your interest. We'll analyze your data and contact you shortly.",
       });
+      
+      setFormData({
+        name: '',
+        email: '',
+        electricityUsage: '',
+        waterUsage: '',
+        monthlyBill: '',
+        additionalInfo: '',
+        file: null,
+      });
+      setAuditType('');
       
     } catch (error) {
       console.error('Error:', error);
@@ -121,6 +168,8 @@ const CTA = () => {
         description: "There was an error submitting your request. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -275,7 +324,6 @@ const CTA = () => {
                           className="sr-only" 
                           accept=".pdf,.jpg,.jpeg,.png"
                           onChange={handleFileChange}
-                          required
                         />
                         <p className="text-xs text-white/50 mt-1">PDF, PNG, JPG up to 10MB</p>
                         {formData.file && (
@@ -287,8 +335,12 @@ const CTA = () => {
                     </div>
                   </div>
                 </div>
-                <Button type="submit" className="w-full bg-white text-black hover:bg-gray-100">
-                  Request Free Audit
+                <Button 
+                  type="submit" 
+                  className="w-full bg-white text-black hover:bg-gray-100"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Submitting..." : "Request Free Audit"}
                 </Button>
               </form>
             </div>

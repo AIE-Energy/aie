@@ -27,6 +27,18 @@ serve(async (req) => {
       throw new Error('AIRTABLE_API_KEY is not set')
     }
 
+    // If there's a file_url in the formData, include it in the Airtable submission
+    const fieldsToSubmit = {
+      FormType: formType,
+      ...formData,
+      SubmittedAt: new Date().toISOString(),
+    }
+
+    // If there's a file_url, add it to the Airtable record
+    if (formData.file_url) {
+      fieldsToSubmit.FileURL = formData.file_url
+    }
+
     const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
       method: 'POST',
       headers: {
@@ -36,11 +48,7 @@ serve(async (req) => {
       body: JSON.stringify({
         records: [
           {
-            fields: {
-              FormType: formType,
-              ...formData,
-              SubmittedAt: new Date().toISOString(),
-            },
+            fields: fieldsToSubmit,
           },
         ],
       }),

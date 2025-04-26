@@ -1,10 +1,8 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 
 export const useAirtableSubmit = () => {
-  const { toast } = useToast();
-
   const submitToAirtable = async (formType: string, formData: any) => {
     try {
       console.log('Submitting to Airtable:', { formType, formData });
@@ -15,21 +13,13 @@ export const useAirtableSubmit = () => {
 
       if (error) {
         console.error('Supabase function error:', error);
-        toast({
-          title: "Error submitting to Airtable",
-          description: error.message,
-          variant: "destructive",
-        });
+        toast.error("Error submitting form: " + error.message);
         return false;
       }
       
-      if (data?.error) {
-        console.error('Airtable API error:', data.error);
-        toast({
-          title: "Error submitting to Airtable",
-          description: data.error,
-          variant: "destructive",
-        });
+      if (!data?.success) {
+        console.error('Airtable API error:', data?.error);
+        toast.error("Error submitting to Airtable: " + (data?.error || "Unknown error"));
         return false;
       }
       
@@ -37,11 +27,7 @@ export const useAirtableSubmit = () => {
       return true;
     } catch (error: any) {
       console.error('Error submitting to Airtable:', error);
-      toast({
-        title: "Error submitting to Airtable",
-        description: error.message || "An unknown error occurred",
-        variant: "destructive",
-      });
+      toast.error("Error submitting form: " + (error.message || "An unknown error occurred"));
       return false;
     }
   };

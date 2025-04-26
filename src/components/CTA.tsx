@@ -4,6 +4,7 @@ import { CheckCircle2, Upload } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,7 +12,7 @@ import SubscriptionInquiryForm from './SubscriptionInquiryForm';
 import { useAirtableSubmit } from '@/hooks/useAirtableSubmit';
 
 const CTA = () => {
-  const { toast } = useToast();
+  const { toast: toastUI } = useToast();
   const { submitToAirtable } = useAirtableSubmit();
   const [showDialog, setShowDialog] = useState(false);
   const [auditType, setAuditType] = useState<string>("");
@@ -38,7 +39,7 @@ const CTA = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFormData(prev => ({ ...prev, file: e.target.files![0] }));
-      toast({
+      toastUI({
         title: "File selected",
         description: `Selected file: ${e.target.files[0].name}`,
       });
@@ -51,7 +52,7 @@ const CTA = () => {
     
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setFormData(prev => ({ ...prev, file: e.dataTransfer.files[0] }));
-      toast({
+      toastUI({
         title: "File uploaded",
         description: `Uploaded file: ${e.dataTransfer.files[0].name}`,
       });
@@ -133,7 +134,8 @@ const CTA = () => {
 
       if (insertError) throw insertError;
 
-      await submitToAirtable('audit_request', {
+      console.log('Submitting audit request to Airtable...');
+      const airtableSuccess = await submitToAirtable('audit_request', {
         Name: formData.name,
         Email: formData.email,
         AuditType: auditType,
@@ -145,10 +147,11 @@ const CTA = () => {
         file_url: fileUrl
       });
 
-      toast({
-        title: "Audit request submitted successfully",
-        description: "Thank you for your request. Our team will contact you shortly to discuss your audit in detail.",
-      });
+      if (!airtableSuccess) {
+        console.warn('Airtable submission failed, but database record was created');
+      }
+
+      toast.success("Audit request submitted successfully! Our team will contact you shortly to discuss your audit in detail.");
       
       setFormData({
         name: '',
@@ -163,11 +166,7 @@ const CTA = () => {
       
     } catch (error) {
       console.error('Error:', error);
-      toast({
-        title: "Error submitting request",
-        description: "There was an error submitting your request. Please try again.",
-        variant: "destructive",
-      });
+      toast.error("There was an error submitting your request. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

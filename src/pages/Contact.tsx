@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -21,6 +22,7 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
+      console.log('Submitting contact form to Airtable...');
       const success = await submitToAirtable('contact_form', {
         Name: formData.name,
         Email: formData.email,
@@ -30,6 +32,8 @@ const Contact = () => {
       if (success) {
         toast.success("Thank you for your message! Our team will contact you shortly to address your inquiry.");
         setFormData({ name: '', email: '', message: '' });
+      } else {
+        toast.error("There was a problem sending your message. Please try again.");
       }
     } catch (error) {
       console.error('Error submitting form:', error);

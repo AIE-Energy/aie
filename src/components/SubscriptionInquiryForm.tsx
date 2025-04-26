@@ -1,8 +1,8 @@
 import React from 'react';
-import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -14,7 +14,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAirtableSubmit } from '@/hooks/useAirtableSubmit';
 
 const SubscriptionInquiryForm = ({ onClose }: { onClose: () => void }) => {
-  const { toast } = useToast();
   const { submitToAirtable } = useAirtableSubmit();
   const [formData, setFormData] = React.useState({
     fullName: '',
@@ -44,7 +43,8 @@ const SubscriptionInquiryForm = ({ onClose }: { onClose: () => void }) => {
 
       if (error) throw error;
 
-      await submitToAirtable('subscription_inquiry', {
+      console.log('Submitting subscription inquiry to Airtable...');
+      const airtableSuccess = await submitToAirtable('subscription_inquiry', {
         FullName: formData.fullName,
         CompanyName: formData.companyName,
         Email: formData.email,
@@ -53,18 +53,15 @@ const SubscriptionInquiryForm = ({ onClose }: { onClose: () => void }) => {
         AdditionalInfo: formData.additionalInfo,
       });
 
-      toast({
-        title: "Subscription inquiry received",
-        description: "Thank you for your interest. Our team will contact you within 24 hours to discuss subscription options.",
-      });
+      if (!airtableSuccess) {
+        console.warn('Airtable submission failed, but database record was created');
+      }
+
+      toast.success("Thank you for your interest! Our team will contact you within 24 hours to discuss subscription options.");
       onClose();
     } catch (error) {
       console.error('Error:', error);
-      toast({
-        title: "Error submitting inquiry",
-        description: "There was a problem submitting your inquiry. Please try again.",
-        variant: "destructive",
-      });
+      toast.error("There was a problem submitting your inquiry. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

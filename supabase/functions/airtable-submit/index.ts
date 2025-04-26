@@ -4,7 +4,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
 const AIRTABLE_API_KEY = Deno.env.get('AIRTABLE_API_KEY')
 const BASE_ID = 'appZYmGAfoDoqtchL'
-const TABLE_NAME = 'Audit Requests'  // Updated to match the table name in Airtable
+const TABLE_NAME = 'Form Submissions'  // Updated to use a more generic table name
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -37,9 +37,10 @@ serve(async (req) => {
       fieldsToSubmit.FileURL = formData.file_url
     }
 
-    console.log(`Attempting to connect to Airtable BASE_ID: ${BASE_ID}, TABLE: ${TABLE_NAME}`)
+    console.log(`Connecting to Airtable BASE_ID: ${BASE_ID}, TABLE: ${TABLE_NAME}`)
+    console.log('Fields being submitted:', fieldsToSubmit)
     
-    const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
+    const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_NAME)}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
@@ -54,21 +55,30 @@ serve(async (req) => {
       }),
     })
 
-    const data = await response.json()
+    const responseText = await response.text();
+    let data;
     
-    if (!response.ok) {
-      console.error('Airtable API error:', data)
-      throw new Error(`Airtable API error: ${JSON.stringify(data)}`)
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      console.error('Failed to parse Airtable response:', responseText);
+      throw new Error(`Invalid JSON response from Airtable: ${responseText}`);
     }
     
-    console.log('Airtable submission response:', data)
+    if (!response.ok) {
+      console.error('Airtable API error:', data);
+      console.error('Response status:', response.status);
+      throw new Error(`Airtable API error: ${JSON.stringify(data)}`);
+    }
+    
+    console.log('Airtable submission successful:', data);
 
-    return new Response(JSON.stringify(data), {
+    return new Response(JSON.stringify({ success: true, data }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (error) {
-    console.error('Error submitting to Airtable:', error)
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error('Error submitting to Airtable:', error);
+    return new Response(JSON.stringify({ error: error.message, success: false }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })

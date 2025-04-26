@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Home, Bolt, Droplet } from 'lucide-react';
 
 const Navbar = () => {
   return (
@@ -9,22 +8,21 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
           <div className="flex items-center mr-2">
-            <span className="text-eco-blue text-2xl font-bold">Eco</span>
-            <span className="text-eco-green text-2xl font-bold">Eye</span>
+            <span className="text-black text-2xl font-bold">AIE</span>
           </div>
-          <div className="hidden md:flex text-eco-gray-dark text-sm ml-2">
+          <div className="hidden md:flex text-gray-700 text-sm ml-2">
             AI-Powered Resource Monitoring
           </div>
         </div>
 
         <div className="hidden md:flex items-center space-x-6">
-          <a href="#features" className="text-eco-gray-dark hover:text-eco-blue transition-colors">Features</a>
-          <a href="#how-it-works" className="text-eco-gray-dark hover:text-eco-blue transition-colors">How it Works</a>
-          <a href="#stats" className="text-eco-gray-dark hover:text-eco-blue transition-colors">Stats</a>
-          <a href="#get-started" className="text-eco-gray-dark hover:text-eco-blue transition-colors">Get Started</a>
+          <a href="#features" className="text-gray-800 hover:text-black transition-colors">Features</a>
+          <a href="#how-it-works" className="text-gray-800 hover:text-black transition-colors">How it Works</a>
+          <a href="#stats" className="text-gray-800 hover:text-black transition-colors">Stats</a>
+          <a href="#get-started" className="text-gray-800 hover:text-black transition-colors">Get Started</a>
         </div>
 
-        <Button className="bg-eco-blue hover:bg-eco-blue-dark text-white">
+        <Button className="bg-black hover:bg-gray-800 text-white">
           Try Demo
         </Button>
       </div>

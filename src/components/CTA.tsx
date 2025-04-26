@@ -14,12 +14,12 @@ const CTA = () => {
   return (
     <section id="get-started" className="py-16">
       <div className="container mx-auto px-4">
-        <div className="bg-gradient-to-r from-eco-blue to-eco-green rounded-3xl overflow-hidden shadow-xl">
+        <div className="bg-gradient-to-r from-black to-gray-800 rounded-3xl overflow-hidden shadow-xl">
           <div className="grid md:grid-cols-2 gap-8 p-8 md:p-12 items-center">
             <div className="text-white">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">Free Resource Audit</h2>
               <p className="text-white/90 mb-8 text-lg">
-                Want to understand your electricity or water consumption? Fill in your details for a complimentary, AI-powered audit that reveals potential savings.
+                Want a free electricity or water audit? Fill in your details to find out more.
               </p>
               
               <div className="space-y-3 mb-8">
@@ -32,7 +32,7 @@ const CTA = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-white text-eco-blue hover:bg-white/90">
+                <Button size="lg" className="bg-white text-black hover:bg-gray-100">
                   Get Free Audit
                 </Button>
                 <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
@@ -70,7 +70,7 @@ const CTA = () => {
                     <option>Both Audits</option>
                   </select>
                 </div>
-                <Button className="w-full bg-white text-eco-blue hover:bg-white/90">
+                <Button className="w-full bg-white text-black hover:bg-gray-100">
                   Request Free Audit
                 </Button>
               </div>

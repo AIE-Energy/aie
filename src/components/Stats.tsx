@@ -29,7 +29,7 @@ const Stats = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Real <span className="gradient-text">Results</span></h2>
           <p className="text-eco-gray-dark max-w-2xl mx-auto">
-            See how EcoEye helps customers track and reduce their resource consumption
+            See how AIE helps customers track and reduce their resource consumption
           </p>
         </div>
 
@@ -61,7 +61,7 @@ const Stats = () => {
               <div className="mt-4 flex items-center justify-between">
                 <div>
                   <p className="text-sm text-eco-gray-dark">Average</p>
-                  <p className="font-bold text-xl">5.1 kWh</p>
+                  <p className="font-bold text-xl">R 5.1 kWh</p>
                 </div>
                 <div>
                   <p className="text-sm text-eco-gray-dark">Total Savings</p>
@@ -98,7 +98,7 @@ const Stats = () => {
               <div className="mt-4 flex items-center justify-between">
                 <div>
                   <p className="text-sm text-eco-gray-dark">Average</p>
-                  <p className="font-bold text-xl">153.5 L</p>
+                  <p className="font-bold text-xl">R 153.5 L</p>
                 </div>
                 <div>
                   <p className="text-sm text-eco-gray-dark">Total Savings</p>

@@ -3,10 +3,8 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
 const AIRTABLE_API_KEY = Deno.env.get('AIRTABLE_API_KEY')
-// You need to replace this with your actual Airtable Base ID
-// You can find this in your Airtable URL: https://airtable.com/[YOUR_BASE_ID]/[TABLE_NAME]
-const BASE_ID = Deno.env.get('AIRTABLE_BASE_ID') || 'appXXXXXXXXXXXXXX' // Will use env var if set
-const TABLE_NAME = Deno.env.get('AIRTABLE_TABLE_NAME') || 'Submissions' // Will use env var if set
+const BASE_ID = 'appZYmGAfoDoqtchL'
+const TABLE_NAME = 'Default'  // Based on the table view you shared
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -28,7 +26,6 @@ serve(async (req) => {
       throw new Error('AIRTABLE_API_KEY is not set')
     }
 
-    // If there's a file_url in the formData, include it in the Airtable submission
     const fieldsToSubmit = {
       FormType: formType,
       ...formData,

@@ -61,82 +61,103 @@ const SubscriptionInquiryForm = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 text-left">
+    <form onSubmit={handleSubmit} className="space-y-4 text-left p-4 bg-gradient-to-r from-black to-gray-800 rounded-lg">
       <div>
-        <label className="block text-sm font-medium mb-1">Full Name</label>
+        <label className="block text-white/90 mb-1">Full Name</label>
         <Input
           required
           value={formData.fullName}
           onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
           placeholder="Enter your full name"
+          className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
         />
       </div>
       
       <div>
-        <label className="block text-sm font-medium mb-1">Company Name</label>
+        <label className="block text-white/90 mb-1">Company Name</label>
         <Input
           required
           value={formData.companyName}
           onChange={(e) => setFormData(prev => ({ ...prev, companyName: e.target.value }))}
           placeholder="Enter your company name"
+          className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Email Address</label>
+        <label className="block text-white/90 mb-1">Email Address</label>
         <Input
           required
           type="email"
           value={formData.email}
           onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
           placeholder="Enter your email address"
+          className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Location</label>
+        <label className="block text-white/90 mb-1">Location</label>
         <Input
           required
           value={formData.location}
           onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
           placeholder="Enter your location"
+          className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Inquiry Type</label>
+        <label className="block text-white/90 mb-1">Inquiry Type</label>
         <Select
           required
           value={formData.inquiryType}
           onValueChange={(value) => setFormData(prev => ({ ...prev, inquiryType: value }))}
         >
-          <SelectTrigger>
+          <SelectTrigger className="bg-white/20 border-white/30 text-white placeholder:text-white/50">
             <SelectValue placeholder="Select inquiry type" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="electricity">Electricity Monitoring</SelectItem>
-            <SelectItem value="water">Water Management</SelectItem>
-            <SelectItem value="both">Complete Solution</SelectItem>
-            <SelectItem value="other">Other</SelectItem>
+          <SelectContent className="bg-gray-800 text-white border border-white/30">
+            <SelectItem value="electricity" className="text-white hover:bg-gray-700 focus:bg-gray-700 focus:text-white">
+              Electricity Monitoring
+            </SelectItem>
+            <SelectItem value="water" className="text-white hover:bg-gray-700 focus:bg-gray-700 focus:text-white">
+              Water Management
+            </SelectItem>
+            <SelectItem value="both" className="text-white hover:bg-gray-700 focus:bg-gray-700 focus:text-white">
+              Complete Solution
+            </SelectItem>
+            <SelectItem value="other" className="text-white hover:bg-gray-700 focus:bg-gray-700 focus:text-white">
+              Other
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Additional Information</label>
+        <label className="block text-white/90 mb-1">Additional Information</label>
         <Textarea
           value={formData.additionalInfo}
           onChange={(e) => setFormData(prev => ({ ...prev, additionalInfo: e.target.value }))}
           placeholder="Please share any specific requirements or questions"
-          className="h-24"
+          className="h-24 bg-white/20 border-white/30 text-white placeholder:text-white/50"
         />
       </div>
 
       <div className="flex justify-end gap-3 pt-4">
-        <Button type="button" variant="outline" onClick={onClose}>
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={onClose}
+          className="text-white bg-transparent border-white/30 hover:bg-white/10"
+        >
           Cancel
         </Button>
-        <Button type="submit" disabled={isSubmitting}>
+        <Button 
+          type="submit" 
+          disabled={isSubmitting}
+          className="bg-white text-black hover:bg-gray-100"
+        >
           {isSubmitting ? "Submitting..." : "Submit Inquiry"}
         </Button>
       </div>

@@ -9,7 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      audit_requests: {
+        Row: {
+          additional_info: string | null
+          audit_type: string
+          created_at: string | null
+          electricity_usage: number | null
+          email: string
+          file_path: string | null
+          id: string
+          monthly_bill: number | null
+          name: string
+          water_usage: number | null
+        }
+        Insert: {
+          additional_info?: string | null
+          audit_type: string
+          created_at?: string | null
+          electricity_usage?: number | null
+          email: string
+          file_path?: string | null
+          id?: string
+          monthly_bill?: number | null
+          name: string
+          water_usage?: number | null
+        }
+        Update: {
+          additional_info?: string | null
+          audit_type?: string
+          created_at?: string | null
+          electricity_usage?: number | null
+          email?: string
+          file_path?: string | null
+          id?: string
+          monthly_bill?: number | null
+          name?: string
+          water_usage?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

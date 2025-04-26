@@ -1,13 +1,24 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Upload } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { supabase } from "@/integrations/supabase/client";
 
 const CTA = () => {
   const { toast } = useToast();
+  const [auditType, setAuditType] = useState<string>("");
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    electricityUsage: '',
+    waterUsage: '',
+    monthlyBill: '',
+    additionalInfo: '',
+    file: null as File | null,
+  });
   
   const benefits = [
     "Comprehensive electricity and water usage analysis",
@@ -17,13 +28,55 @@ const CTA = () => {
     "24/7 usage monitoring and alerts"
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData(prev => ({ ...prev, file: e.target.files![0] }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Audit request submitted",
-      description: "Thank you for your interest. We'll analyze your data and contact you shortly.",
-    });
-    // Form submission logic would go here
+    try {
+      let filePath = null;
+      if (formData.file) {
+        const fileExt = formData.file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('utility_bills')
+          .upload(fileName, formData.file);
+          
+        if (uploadError) throw uploadError;
+        filePath = fileName;
+      }
+
+      const { error: insertError } = await supabase
+        .from('audit_requests')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          audit_type: auditType,
+          electricity_usage: auditType !== 'water' ? parseFloat(formData.electricityUsage) : null,
+          water_usage: auditType !== 'electricity' ? parseFloat(formData.waterUsage) : null,
+          monthly_bill: parseFloat(formData.monthlyBill),
+          additional_info: formData.additionalInfo,
+          file_path: filePath,
+        });
+
+      if (insertError) throw insertError;
+
+      toast({
+        title: "Audit request submitted",
+        description: "Thank you for your interest. We'll analyze your data and contact you shortly.",
+      });
+      
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error submitting request",
+        description: "There was an error submitting your request. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -70,6 +123,8 @@ const CTA = () => {
                     placeholder="Enter your full name"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
                     required
+                    value={formData.name}
+                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   />
                 </div>
                 <div>
@@ -79,17 +134,56 @@ const CTA = () => {
                     placeholder="Enter your email"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
                     required
+                    value={formData.email}
+                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   />
                 </div>
                 <div>
-                  <label className="block text-white/90 mb-1">Current Monthly Usage (kWh)</label>
-                  <Input 
-                    type="number" 
-                    placeholder="e.g., 800"
-                    className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
+                  <label className="block text-white/90 mb-1">Type of Audit</label>
+                  <Select 
+                    value={auditType} 
+                    onValueChange={setAuditType}
                     required
-                  />
+                  >
+                    <SelectTrigger className="bg-white/20 border-white/30 text-white">
+                      <SelectValue placeholder="Select audit type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="electricity">Electricity Usage</SelectItem>
+                      <SelectItem value="water">Water Usage</SelectItem>
+                      <SelectItem value="both">Both</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
+                
+                {(auditType === 'electricity' || auditType === 'both') && (
+                  <div>
+                    <label className="block text-white/90 mb-1">Current Monthly Electricity Usage (kWh)</label>
+                    <Input 
+                      type="number" 
+                      placeholder="e.g., 800"
+                      className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
+                      required
+                      value={formData.electricityUsage}
+                      onChange={(e) => setFormData(prev => ({ ...prev, electricityUsage: e.target.value }))}
+                    />
+                  </div>
+                )}
+
+                {(auditType === 'water' || auditType === 'both') && (
+                  <div>
+                    <label className="block text-white/90 mb-1">Current Monthly Water Usage (Litres)</label>
+                    <Input 
+                      type="number" 
+                      placeholder="e.g., 10000"
+                      className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
+                      required
+                      value={formData.waterUsage}
+                      onChange={(e) => setFormData(prev => ({ ...prev, waterUsage: e.target.value }))}
+                    />
+                  </div>
+                )}
+
                 <div>
                   <label className="block text-white/90 mb-1">Average Monthly Bill ($)</label>
                   <Input 
@@ -97,6 +191,8 @@ const CTA = () => {
                     placeholder="e.g., 150"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
                     required
+                    value={formData.monthlyBill}
+                    onChange={(e) => setFormData(prev => ({ ...prev, monthlyBill: e.target.value }))}
                   />
                 </div>
                 <div>
@@ -104,6 +200,8 @@ const CTA = () => {
                   <Textarea 
                     placeholder="Tell us about your energy usage patterns or concerns"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
+                    value={formData.additionalInfo}
+                    onChange={(e) => setFormData(prev => ({ ...prev, additionalInfo: e.target.value }))}
                   />
                 </div>
                 <div>
@@ -114,7 +212,15 @@ const CTA = () => {
                       <div className="flex text-sm text-white/90">
                         <label htmlFor="file-upload" className="relative cursor-pointer rounded-md font-medium text-white hover:text-white/90">
                           <span>Upload a file</span>
-                          <input id="file-upload" name="file-upload" type="file" className="sr-only" accept=".pdf,.jpg,.jpeg,.png" required />
+                          <input 
+                            id="file-upload" 
+                            name="file-upload" 
+                            type="file" 
+                            className="sr-only" 
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            onChange={handleFileChange}
+                            required
+                          />
                         </label>
                         <p className="pl-1">or drag and drop</p>
                       </div>

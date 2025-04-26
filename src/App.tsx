@@ -8,9 +8,6 @@ import Index from "./pages/Index";
 import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-import Uploads from "./pages/Uploads";
-
-import "./App.css";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +20,6 @@ function App() {
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/uploads" element={<Uploads />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

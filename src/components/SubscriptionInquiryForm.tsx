@@ -1,0 +1,147 @@
+
+import React from 'react';
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { supabase } from "@/integrations/supabase/client";
+
+const SubscriptionInquiryForm = ({ onClose }: { onClose: () => void }) => {
+  const { toast } = useToast();
+  const [formData, setFormData] = React.useState({
+    fullName: '',
+    companyName: '',
+    email: '',
+    location: '',
+    inquiryType: '',
+    additionalInfo: '',
+  });
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('subscription_inquiries')
+        .insert({
+          full_name: formData.fullName,
+          company_name: formData.companyName,
+          email: formData.email,
+          location: formData.location,
+          inquiry_type: formData.inquiryType,
+          additional_info: formData.additionalInfo,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Inquiry submitted successfully",
+        description: "Thank you for your interest. We'll be in touch shortly.",
+      });
+      onClose();
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error submitting inquiry",
+        description: "There was a problem submitting your inquiry. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 text-left">
+      <div>
+        <label className="block text-sm font-medium mb-1">Full Name</label>
+        <Input
+          required
+          value={formData.fullName}
+          onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+          placeholder="Enter your full name"
+        />
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium mb-1">Company Name</label>
+        <Input
+          required
+          value={formData.companyName}
+          onChange={(e) => setFormData(prev => ({ ...prev, companyName: e.target.value }))}
+          placeholder="Enter your company name"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">Email Address</label>
+        <Input
+          required
+          type="email"
+          value={formData.email}
+          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+          placeholder="Enter your email address"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">Location</label>
+        <Input
+          required
+          value={formData.location}
+          onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
+          placeholder="Enter your location"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">Inquiry Type</label>
+        <Select
+          required
+          value={formData.inquiryType}
+          onValueChange={(value) => setFormData(prev => ({ ...prev, inquiryType: value }))}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select inquiry type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="electricity">Electricity Monitoring</SelectItem>
+            <SelectItem value="water">Water Management</SelectItem>
+            <SelectItem value="both">Complete Solution</SelectItem>
+            <SelectItem value="other">Other</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">Additional Information</label>
+        <Textarea
+          value={formData.additionalInfo}
+          onChange={(e) => setFormData(prev => ({ ...prev, additionalInfo: e.target.value }))}
+          placeholder="Please share any specific requirements or questions"
+          className="h-24"
+        />
+      </div>
+
+      <div className="flex justify-end gap-3 pt-4">
+        <Button type="button" variant="outline" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Submit Inquiry"}
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+export default SubscriptionInquiryForm;

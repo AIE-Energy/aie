@@ -48,6 +48,39 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_inquiries: {
+        Row: {
+          additional_info: string | null
+          company_name: string
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          inquiry_type: string
+          location: string
+        }
+        Insert: {
+          additional_info?: string | null
+          company_name: string
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          inquiry_type: string
+          location: string
+        }
+        Update: {
+          additional_info?: string | null
+          company_name?: string
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          inquiry_type?: string
+          location?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

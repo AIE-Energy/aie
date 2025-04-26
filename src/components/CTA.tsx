@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Upload } from 'lucide-react';
@@ -6,10 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
+import SubscriptionInquiryForm from './SubscriptionInquiryForm';
 
 const CTA = () => {
   const { toast } = useToast();
+  const [showDialog, setShowDialog] = useState(false);
   const [auditType, setAuditType] = useState<string>("");
   const [formData, setFormData] = useState({
     name: '',
@@ -140,6 +142,7 @@ const CTA = () => {
                 <Button 
                   variant="secondary"
                   className="text-white bg-gray-800/60 hover:bg-gray-700 border border-white/30 hover:border-white"
+                  onClick={() => setShowDialog(true)}
                 >
                   Learn More About Subscription
                 </Button>
@@ -279,6 +282,15 @@ const CTA = () => {
           </div>
         </div>
       </div>
+
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Subscription Inquiry</DialogTitle>
+          </DialogHeader>
+          <SubscriptionInquiryForm onClose={() => setShowDialog(false)} />
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

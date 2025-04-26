@@ -3,9 +3,10 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
 const AIRTABLE_API_KEY = Deno.env.get('AIRTABLE_API_KEY')
-// You'll need to replace this with your actual Airtable Base ID from your Airtable workspace
-const BASE_ID = 'appXXXXXXXXXXXXXX' // Replace with your base ID
-const TABLE_NAME = 'Submissions'
+// You need to replace this with your actual Airtable Base ID
+// You can find this in your Airtable URL: https://airtable.com/[YOUR_BASE_ID]/[TABLE_NAME]
+const BASE_ID = Deno.env.get('AIRTABLE_BASE_ID') || 'appXXXXXXXXXXXXXX' // Will use env var if set
+const TABLE_NAME = Deno.env.get('AIRTABLE_TABLE_NAME') || 'Submissions' // Will use env var if set
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -39,6 +40,8 @@ serve(async (req) => {
       fieldsToSubmit.FileURL = formData.file_url
     }
 
+    console.log(`Attempting to connect to Airtable BASE_ID: ${BASE_ID}, TABLE: ${TABLE_NAME}`)
+    
     const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
       method: 'POST',
       headers: {

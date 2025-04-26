@@ -1,35 +1,36 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React from "react";
+import { Toaster } from "sonner";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { TooltipProvider } from "@/components/ui/tooltip";
+
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
 import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
+import NotFound from "./pages/NotFound";
+import Uploads from "./pages/Uploads";
 
-const App = () => {
-  // Create a client instance inside the component instead of at module scope
-  const [queryClient] = React.useState(() => new QueryClient());
+import "./App.css";
 
+const queryClient = new QueryClient();
+
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/contact" element={<Contact />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/uploads" element={<Uploads />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+        <Toaster position="top-right" richColors />
       </TooltipProvider>
     </QueryClientProvider>
   );
-};
+}
 
 export default App;

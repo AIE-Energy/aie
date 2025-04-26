@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -29,7 +28,7 @@ const Contact = () => {
       });
       
       if (success) {
-        toast.success("Message sent successfully! We'll get back to you soon.");
+        toast.success("Thank you for your message! Our team will contact you shortly to address your inquiry.");
         setFormData({ name: '', email: '', message: '' });
       }
     } catch (error) {

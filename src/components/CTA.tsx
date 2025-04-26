@@ -146,8 +146,8 @@ const CTA = () => {
       });
 
       toast({
-        title: "Audit request submitted",
-        description: "Thank you for your interest. We'll analyze your data and contact you shortly.",
+        title: "Audit request submitted successfully",
+        description: "Thank you for your request. Our team will contact you shortly to discuss your audit in detail.",
       });
       
       setFormData({

@@ -54,8 +54,8 @@ const SubscriptionInquiryForm = ({ onClose }: { onClose: () => void }) => {
       });
 
       toast({
-        title: "Inquiry submitted successfully",
-        description: "Thank you for your interest. We'll be in touch shortly.",
+        title: "Subscription inquiry received",
+        description: "Thank you for your interest. Our team will contact you within 24 hours to discuss subscription options.",
       });
       onClose();
     } catch (error) {

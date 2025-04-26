@@ -3,3 +3,6 @@ project_id = "perplexity-chat"
 
 [functions.perplexity-chat]
 verify_jwt = false
+
+[functions.airtable-submit]
+verify_jwt = false

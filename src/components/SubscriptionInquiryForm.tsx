@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -12,9 +11,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
+import { useAirtableSubmit } from '@/hooks/useAirtableSubmit';
 
 const SubscriptionInquiryForm = ({ onClose }: { onClose: () => void }) => {
   const { toast } = useToast();
+  const { submitToAirtable } = useAirtableSubmit();
   const [formData, setFormData] = React.useState({
     fullName: '',
     companyName: '',
@@ -42,6 +43,15 @@ const SubscriptionInquiryForm = ({ onClose }: { onClose: () => void }) => {
         });
 
       if (error) throw error;
+
+      await submitToAirtable('subscription_inquiry', {
+        FullName: formData.fullName,
+        CompanyName: formData.companyName,
+        Email: formData.email,
+        Location: formData.location,
+        InquiryType: formData.inquiryType,
+        AdditionalInfo: formData.additionalInfo,
+      });
 
       toast({
         title: "Inquiry submitted successfully",

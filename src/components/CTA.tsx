@@ -8,9 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import SubscriptionInquiryForm from './SubscriptionInquiryForm';
+import { useAirtableSubmit } from '@/hooks/useAirtableSubmit';
 
 const CTA = () => {
   const { toast } = useToast();
+  const { submitToAirtable } = useAirtableSubmit();
   const [showDialog, setShowDialog] = useState(false);
   const [auditType, setAuditType] = useState<string>("");
   const [formData, setFormData] = useState({
@@ -95,6 +97,17 @@ const CTA = () => {
         });
 
       if (insertError) throw insertError;
+
+      await submitToAirtable('audit_request', {
+        Name: formData.name,
+        Email: formData.email,
+        AuditType: auditType,
+        ElectricityUsage: auditType !== 'water' ? parseFloat(formData.electricityUsage) : null,
+        WaterUsage: auditType !== 'electricity' ? parseFloat(formData.waterUsage) : null,
+        MonthlyBill: parseFloat(formData.monthlyBill),
+        AdditionalInfo: formData.additionalInfo,
+        HasAttachment: !!filePath
+      });
 
       toast({
         title: "Audit request submitted",

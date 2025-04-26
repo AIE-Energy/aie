@@ -85,7 +85,7 @@ const AIChat = () => {
           </form>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

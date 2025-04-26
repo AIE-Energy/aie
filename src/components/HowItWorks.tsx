@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Cpu, Monitor, CloudCog } from 'lucide-react';
+import { Cpu, Monitor, CloudCog, TrendingDown } from 'lucide-react';
 
 const HowItWorks = () => {
   const steps = [
@@ -21,6 +21,12 @@ const HowItWorks = () => {
       title: "AI Analysis",
       description: "Our AI engine processes your usage data to identify patterns and optimization opportunities",
       position: "left"
+    },
+    {
+      icon: <TrendingDown className="w-12 h-12 text-white" />,
+      title: "Save & Optimize",
+      description: "Receive personalized recommendations and watch your utility bills decrease",
+      position: "right"
     }
   ];
 

@@ -5,7 +5,10 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -21,19 +24,40 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="text-gray-800 hover:text-black transition-colors">Home</Link>
-          <Link to="/about" className="text-gray-800 hover:text-black transition-colors">About Us</Link>
-          <Link to="/contact" className="text-gray-800 hover:text-black transition-colors">Contact</Link>
-          <a href="#features" className="text-gray-800 hover:text-black transition-colors">Features</a>
-          <a href="#how-it-works" className="text-gray-800 hover:text-black transition-colors">How it Works</a>
-          <a href="#stats" className="text-gray-800 hover:text-black transition-colors">Stats</a>
+          <Link to="/" className="text-gray-800 hover:text-black transition-colors cursor-pointer">
+            Home
+          </Link>
+          <Link to="/about" className="text-gray-800 hover:text-black transition-colors cursor-pointer">
+            About Us
+          </Link>
+          <button 
+            onClick={() => scrollToSection('features')} 
+            className="text-gray-800 hover:text-black transition-colors cursor-pointer"
+          >
+            Features
+          </button>
+          <button 
+            onClick={() => scrollToSection('how-it-works')} 
+            className="text-gray-800 hover:text-black transition-colors cursor-pointer"
+          >
+            How it Works
+          </button>
+          <button 
+            onClick={() => scrollToSection('stats')} 
+            className="text-gray-800 hover:text-black transition-colors cursor-pointer"
+          >
+            Statistics
+          </button>
+          <Link to="/contact" className="text-gray-800 hover:text-black transition-colors cursor-pointer">
+            Contact Us
+          </Link>
         </div>
 
         <Button 
           className="bg-black hover:bg-gray-800 text-white"
           onClick={() => scrollToSection('get-started')}
         >
-          Try Demo
+          Free Audit
         </Button>
       </div>
     </nav>

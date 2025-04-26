@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,7 +72,7 @@ const AIChat = () => {
     <>
       {!isOpen && (
         <Button
-          className="fixed bottom-4 right-4 rounded-full p-4 bg-black hover:bg-gray-800"
+          className="fixed bottom-4 right-4 rounded-full p-4 bg-black hover:bg-gray-800 z-40"
           onClick={() => setIsOpen(true)}
         >
           <MessageSquare className="h-6 w-6" />
@@ -81,7 +80,7 @@ const AIChat = () => {
       )}
 
       {isOpen && (
-        <div className="fixed bottom-4 right-4 w-96 bg-white rounded-lg shadow-xl border border-gray-200">
+        <div className="fixed bottom-4 right-4 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
           <div className="flex items-center justify-between p-4 border-b">
             <h3 className="font-semibold">AI Assistant</h3>
             <Button 

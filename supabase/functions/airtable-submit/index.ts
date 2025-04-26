@@ -4,7 +4,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
 const AIRTABLE_API_KEY = Deno.env.get('AIRTABLE_API_KEY')
 const BASE_ID = 'appZYmGAfoDoqtchL'
-const TABLE_NAME = 'Default'  // Based on the table view you shared
+const TABLE_NAME = 'Audit Requests'  // Updated to match the table name in Airtable
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

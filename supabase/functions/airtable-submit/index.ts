@@ -3,6 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
 const AIRTABLE_API_KEY = Deno.env.get('AIRTABLE_API_KEY')
+// You'll need to replace this with your actual Airtable Base ID from your Airtable workspace
 const BASE_ID = 'appXXXXXXXXXXXXXX' // Replace with your base ID
 const TABLE_NAME = 'Submissions'
 
@@ -19,6 +20,12 @@ serve(async (req) => {
 
   try {
     const { formType, formData } = await req.json()
+    
+    console.log('Submitting to Airtable:', { formType, formData })
+
+    if (!AIRTABLE_API_KEY) {
+      throw new Error('AIRTABLE_API_KEY is not set')
+    }
 
     const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
       method: 'POST',
@@ -40,6 +47,12 @@ serve(async (req) => {
     })
 
     const data = await response.json()
+    
+    if (!response.ok) {
+      console.error('Airtable API error:', data)
+      throw new Error(`Airtable API error: ${JSON.stringify(data)}`)
+    }
+    
     console.log('Airtable submission response:', data)
 
     return new Response(JSON.stringify(data), {

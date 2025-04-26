@@ -283,7 +283,7 @@ const CTA = () => {
                 )}
 
                 <div>
-                  <label className="block text-white/90 mb-1">Average Monthly Bill ($)</label>
+                  <label className="block text-white/90 mb-1">Average Monthly Bill (R)</label>
                   <Input 
                     type="number" 
                     placeholder="e.g., 150"

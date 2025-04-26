@@ -1,22 +1,37 @@
 
 import React from 'react';
-import { Circle1, Circle2, Circle3 } from 'lucide-react';
+import { Circle, ListOrdered } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 
 const SimpleSteps = () => {
   const steps = [
     {
-      icon: <Circle1 className="w-12 h-12" />,
+      icon: (
+        <div className="relative flex items-center justify-center">
+          <Circle className="w-12 h-12" />
+          <span className="absolute font-bold">1</span>
+        </div>
+      ),
       title: "Free Installation within minutes",
       description: "Quick and hassle-free setup process"
     },
     {
-      icon: <Circle2 className="w-12 h-12" />,
+      icon: (
+        <div className="relative flex items-center justify-center">
+          <Circle className="w-12 h-12" />
+          <span className="absolute font-bold">2</span>
+        </div>
+      ),
       title: "30 Days AI Insights",
       description: "Comprehensive analysis of your resource usage"
     },
     {
-      icon: <Circle3 className="w-12 h-12" />,
+      icon: (
+        <div className="relative flex items-center justify-center">
+          <Circle className="w-12 h-12" />
+          <span className="absolute font-bold">3</span>
+        </div>
+      ),
       title: "Start Saving through our AI Optimization",
       description: "Implement our recommendations and see immediate results"
     }

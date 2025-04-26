@@ -14,7 +14,7 @@ const Hero = () => {
               <br />Resource Management
             </h1>
             <p className="text-lg md:text-xl mb-8 text-gray-800 max-w-lg">
-              We have built a purposeful AI solution to assist you across electricity and water consumption, transforming complex data into actionable insights.
+              We have built a purposeful AI solution with advanced software integration to assist you across electricity and water consumption, transforming complex data into actionable insights.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="bg-black hover:bg-gray-800 text-white">

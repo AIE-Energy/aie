@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Bolt, Droplet, Gauge, FileText } from 'lucide-react';
+import { Zap, Droplet, Search } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -10,15 +10,15 @@ const Hero = () => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="relative z-10">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="gradient-text">AI-Powered</span>
-              <br />Resource Intelligence
+              <span className="gradient-text">Purposeful AI</span>
+              <br />Resource Management
             </h1>
             <p className="text-lg md:text-xl mb-8 text-eco-gray-dark max-w-lg">
-              EcoEye harnesses advanced AI to transform your resource consumption data into actionable insights, delivering personalized, intelligent recommendations.
+              We have built an AI solution to assist you across electricity and water consumption, transforming complex data into actionable insights.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="bg-eco-blue hover:bg-eco-blue-dark text-white">
-                Get Started
+                Get Free Audit
               </Button>
               <Button size="lg" variant="outline" className="border-eco-blue text-eco-blue hover:bg-eco-blue/5">
                 Learn More
@@ -27,16 +27,16 @@ const Hero = () => {
 
             <div className="mt-8 grid grid-cols-3 gap-4">
               <div className="flex items-center">
-                <Bolt className="h-5 w-5 text-eco-blue mr-2" />
-                <span className="text-sm">Energy Tracking</span>
+                <Zap className="h-5 w-5 text-eco-blue mr-2" />
+                <span className="text-sm">Electricity</span>
               </div>
               <div className="flex items-center">
                 <Droplet className="h-5 w-5 text-eco-blue mr-2" />
-                <span className="text-sm">Water Monitoring</span>
+                <span className="text-sm">Water</span>
               </div>
               <div className="flex items-center">
-                <FileText className="h-5 w-5 text-eco-blue mr-2" />
-                <span className="text-sm">AI Reports</span>
+                <Search className="h-5 w-5 text-eco-blue mr-2" />
+                <span className="text-sm">Free Audit</span>
               </div>
             </div>
           </div>

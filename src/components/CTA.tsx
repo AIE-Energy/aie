@@ -5,10 +5,10 @@ import { CheckCircle2 } from 'lucide-react';
 
 const CTA = () => {
   const benefits = [
-    "Reduce your utility bills by 15-25%",
-    "Detect problems before they become expensive",
-    "Help the environment by optimizing resource usage",
-    "Easy setup with Raspberry Pi - no technical skills required"
+    "Comprehensive electricity and water usage analysis",
+    "Personalized AI-driven optimization recommendations",
+    "Identify potential savings and efficiency improvements",
+    "No-commitment free initial consultation"
   ];
 
   return (
@@ -17,9 +17,9 @@ const CTA = () => {
         <div className="bg-gradient-to-r from-eco-blue to-eco-green rounded-3xl overflow-hidden shadow-xl">
           <div className="grid md:grid-cols-2 gap-8 p-8 md:p-12 items-center">
             <div className="text-white">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to optimize your home?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Free Resource Audit</h2>
               <p className="text-white/90 mb-8 text-lg">
-                Join thousands of households saving money and resources with EcoEye. Our 30-day money-back guarantee ensures you'll see real results.
+                Want to understand your electricity or water consumption? Fill in your details for a complimentary, AI-powered audit that reveals potential savings.
               </p>
               
               <div className="space-y-3 mb-8">
@@ -33,39 +33,45 @@ const CTA = () => {
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="bg-white text-eco-blue hover:bg-white/90">
-                  Get Started Now
+                  Get Free Audit
                 </Button>
                 <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                  Watch Demo
+                  Learn How It Works
                 </Button>
               </div>
             </div>
             
             <div className="bg-white/10 p-6 rounded-xl backdrop-blur-sm border border-white/20">
-              <h3 className="text-white text-xl font-bold mb-4">See how much you can save</h3>
+              <h3 className="text-white text-xl font-bold mb-4">Schedule Your Free Audit</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-white/90 mb-1">Average monthly electricity bill ($)</label>
+                  <label className="block text-white/90 mb-1">Your Name</label>
                   <input 
-                    type="number" 
-                    defaultValue="120" 
+                    type="text" 
+                    placeholder="Enter your full name" 
                     className="w-full p-2 rounded bg-white/20 border border-white/30 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
                   />
                 </div>
                 <div>
-                  <label className="block text-white/90 mb-1">Average monthly water bill ($)</label>
+                  <label className="block text-white/90 mb-1">Email Address</label>
                   <input 
-                    type="number" 
-                    defaultValue="60" 
+                    type="email" 
+                    placeholder="Enter your email" 
                     className="w-full p-2 rounded bg-white/20 border border-white/30 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
                   />
                 </div>
-                <div className="pt-4 border-t border-white/20">
-                  <p className="text-white/90">Estimated yearly savings</p>
-                  <p className="text-3xl font-bold text-white">$324 - $540</p>
+                <div>
+                  <label className="block text-white/90 mb-1">Resource of Interest</label>
+                  <select 
+                    className="w-full p-2 rounded bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+                  >
+                    <option>Electricity Audit</option>
+                    <option>Water Audit</option>
+                    <option>Both Audits</option>
+                  </select>
                 </div>
                 <Button className="w-full bg-white text-eco-blue hover:bg-white/90">
-                  Calculate My Savings
+                  Request Free Audit
                 </Button>
               </div>
             </div>

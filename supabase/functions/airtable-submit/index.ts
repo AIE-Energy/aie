@@ -3,8 +3,9 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
 const AIRTABLE_API_KEY = Deno.env.get('AIRTABLE_API_KEY')
+// Make sure these match exactly with your Airtable setup
 const BASE_ID = 'appZYmGAfoDoqtchL'
-const TABLE_NAME = 'Form Submissions'  // Updated to use a more generic table name
+const TABLE_NAME = 'Form Submissions'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -40,6 +41,7 @@ serve(async (req) => {
     console.log(`Connecting to Airtable BASE_ID: ${BASE_ID}, TABLE: ${TABLE_NAME}`)
     console.log('Fields being submitted:', fieldsToSubmit)
     
+    // Use encodeURIComponent for the table name to handle spaces
     const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_NAME)}`, {
       method: 'POST',
       headers: {
@@ -55,9 +57,11 @@ serve(async (req) => {
       }),
     })
 
+    // Detailed logging of the response
     const responseText = await response.text();
-    let data;
+    console.log('Raw Airtable response:', responseText);
     
+    let data;
     try {
       data = JSON.parse(responseText);
     } catch (e) {
@@ -66,9 +70,9 @@ serve(async (req) => {
     }
     
     if (!response.ok) {
-      console.error('Airtable API error:', data);
-      console.error('Response status:', response.status);
-      throw new Error(`Airtable API error: ${JSON.stringify(data)}`);
+      console.error('Airtable API error status code:', response.status);
+      console.error('Airtable API error response:', data);
+      throw new Error(`Airtable API error (${response.status}): ${JSON.stringify(data)}`);
     }
     
     console.log('Airtable submission successful:', data);

@@ -45,19 +45,23 @@ const SubscriptionInquiryForm = ({ onClose }: { onClose: () => void }) => {
 
       console.log('Submitting subscription inquiry to Airtable...');
       const airtableSuccess = await submitToAirtable('subscription_inquiry', {
-        FullName: formData.fullName,
+        Name: formData.fullName,
         CompanyName: formData.companyName,
         Email: formData.email,
         Location: formData.location,
         InquiryType: formData.inquiryType,
         AdditionalInfo: formData.additionalInfo,
+        Source: 'Website',
+        Status: 'New',
       });
 
       if (!airtableSuccess) {
         console.warn('Airtable submission failed, but database record was created');
+        toast.warning("Your inquiry was saved but there was an issue with our notification system. Our team will still receive your inquiry.");
+      } else {
+        toast.success("Thank you for your interest! Our team will contact you within 24 hours to discuss subscription options.");
       }
 
-      toast.success("Thank you for your interest! Our team will contact you within 24 hours to discuss subscription options.");
       onClose();
     } catch (error) {
       console.error('Error:', error);

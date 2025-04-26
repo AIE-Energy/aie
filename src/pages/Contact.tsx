@@ -27,6 +27,8 @@ const Contact = () => {
         Name: formData.name,
         Email: formData.email,
         Message: formData.message,
+        Source: 'Contact Page',
+        Status: 'New',
       });
       
       if (success) {

@@ -1,13 +1,23 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
+import { Menu } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      setIsOpen(false);
     }
   };
 
@@ -23,6 +33,7 @@ const Navbar = () => {
           </div>
         </div>
 
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           <Link to="/" className="text-gray-800 hover:text-black transition-colors cursor-pointer">
             Home
@@ -53,8 +64,39 @@ const Navbar = () => {
           </Link>
         </div>
 
+        {/* Mobile Navigation */}
+        <div className="md:hidden flex items-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
+                <Menu className="h-6 w-6" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[200px] bg-white">
+              <DropdownMenuItem asChild>
+                <Link to="/" className="w-full">Home</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/about" className="w-full">About Us</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => scrollToSection('features')}>
+                Features
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => scrollToSection('how-it-works')}>
+                How it Works
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => scrollToSection('stats')}>
+                Statistics
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/contact" className="w-full">Contact Us</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
         <Button 
-          className="bg-black hover:bg-gray-800 text-white"
+          className="bg-black hover:bg-gray-800 text-white hidden md:inline-flex"
           onClick={() => scrollToSection('get-started')}
         >
           Free Audit

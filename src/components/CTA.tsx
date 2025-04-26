@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Upload } from 'lucide-react';
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,7 @@ const CTA = () => {
     additionalInfo: '',
     file: null as File | null,
   });
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const benefits = [
     "Comprehensive electricity and water usage analysis",
@@ -31,6 +33,34 @@ const CTA = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFormData(prev => ({ ...prev, file: e.target.files![0] }));
+      toast({
+        title: "File selected",
+        description: `Selected file: ${e.target.files[0].name}`,
+      });
+    }
+  };
+
+  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFormData(prev => ({ ...prev, file: e.dataTransfer.files[0] }));
+      toast({
+        title: "File uploaded",
+        description: `Uploaded file: ${e.dataTransfer.files[0].name}`,
+      });
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -108,8 +138,8 @@ const CTA = () => {
                   <li>• Cost prediction and budgeting tools</li>
                 </ul>
                 <Button 
-                  variant="outline" 
-                  className="border-white text-white hover:bg-white/20 hover:text-white"
+                  variant="secondary"
+                  className="text-white bg-gray-800/60 hover:bg-gray-700 border border-white/30 hover:border-white"
                 >
                   Learn More About Subscription
                 </Button>
@@ -151,10 +181,10 @@ const CTA = () => {
                     <SelectTrigger className="bg-white/20 border-white/30 text-white placeholder:text-white/50">
                       <SelectValue placeholder="Select audit type" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white text-black">
-                      <SelectItem value="electricity">Electricity Usage</SelectItem>
-                      <SelectItem value="water">Water Usage</SelectItem>
-                      <SelectItem value="both">Both</SelectItem>
+                    <SelectContent className="bg-gray-800 text-white border border-white/30">
+                      <SelectItem value="electricity" className="focus:bg-gray-700 focus:text-white hover:bg-gray-700">Electricity Usage</SelectItem>
+                      <SelectItem value="water" className="focus:bg-gray-700 focus:text-white hover:bg-gray-700">Water Usage</SelectItem>
+                      <SelectItem value="both" className="focus:bg-gray-700 focus:text-white hover:bg-gray-700">Both</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -209,25 +239,35 @@ const CTA = () => {
                 </div>
                 <div>
                   <label className="block text-white/90 mb-1">Upload Your Utility Bill</label>
-                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-white/30 border-dashed rounded-md hover:border-white/50 transition-colors">
+                  <div 
+                    className="mt-1 flex flex-col justify-center items-center px-6 pt-5 pb-6 border-2 border-white/30 border-dashed rounded-md hover:border-white/50 transition-colors cursor-pointer"
+                    onClick={handleUploadClick}
+                    onDragOver={handleDragOver}
+                    onDrop={handleFileDrop}
+                  >
                     <div className="space-y-1 text-center">
-                      <Upload className="mx-auto h-12 w-12 text-white/50" />
-                      <div className="flex text-sm text-white/90">
-                        <label htmlFor="file-upload" className="relative cursor-pointer rounded-md font-medium text-white hover:text-white/90">
-                          <span>Upload a file</span>
-                          <input 
-                            id="file-upload" 
-                            name="file-upload" 
-                            type="file" 
-                            className="sr-only" 
-                            accept=".pdf,.jpg,.jpeg,.png"
-                            onChange={handleFileChange}
-                            required
-                          />
-                        </label>
-                        <p className="pl-1">or drag and drop</p>
+                      <Upload className="mx-auto h-12 w-12 text-white hover:text-white/80 transition-colors" />
+                      <div className="flex flex-col text-sm text-white/90">
+                        <span className="font-medium text-white cursor-pointer hover:text-white/80 transition-colors">
+                          Upload a file or drag and drop
+                        </span>
+                        <input 
+                          ref={fileInputRef}
+                          id="file-upload" 
+                          name="file-upload" 
+                          type="file" 
+                          className="sr-only" 
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          onChange={handleFileChange}
+                          required
+                        />
+                        <p className="text-xs text-white/50 mt-1">PDF, PNG, JPG up to 10MB</p>
+                        {formData.file && (
+                          <p className="text-sm text-white mt-2">
+                            Selected: {formData.file.name}
+                          </p>
+                        )}
                       </div>
-                      <p className="text-xs text-white/50">PDF, PNG, JPG up to 10MB</p>
                     </div>
                   </div>
                 </div>

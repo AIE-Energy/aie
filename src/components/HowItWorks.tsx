@@ -6,27 +6,27 @@ const HowItWorks = () => {
   const steps = [
     {
       icon: <Cpu className="h-12 w-12 text-white" />,
-      title: "Install Hardware",
-      description: "Connect the EcoEye Raspberry Pi module to your utility meters using our simple clip-on sensors",
-      color: "bg-eco-blue"
+      title: "Integrate Our Software",
+      description: "Set up our AI-powered software platform to connect with your utility data sources",
+      color: "bg-black"
     },
     {
       icon: <Bolt className="h-12 w-12 text-white" />,
       title: "Monitor Resources",
-      description: "The sensors begin tracking electricity and water consumption in real-time",
-      color: "bg-eco-green"
+      description: "The software begins tracking electricity and water consumption in real-time",
+      color: "bg-gray-700"
     },
     {
       icon: <CloudCog className="h-12 w-12 text-white" />,
       title: "AI Analysis",
       description: "Our AI engine processes your usage data to identify patterns and optimization opportunities",
-      color: "bg-eco-blue"
+      color: "bg-black"
     },
     {
       icon: <Activity className="h-12 w-12 text-white" />,
       title: "Save & Optimize",
       description: "Receive personalized recommendations and watch your utility bills decrease",
-      color: "bg-eco-green"
+      color: "bg-gray-700"
     }
   ];
 
@@ -35,8 +35,8 @@ const HowItWorks = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">How <span className="gradient-text">It Works</span></h2>
-          <p className="text-eco-gray-dark max-w-2xl mx-auto">
-            Getting started with EcoEye is simple - follow these steps to begin optimizing your resource usage
+          <p className="text-gray-800 max-w-2xl mx-auto">
+            Getting started with AIE is simple - follow these steps to begin optimizing your resource usage
           </p>
         </div>
 
@@ -53,7 +53,7 @@ const HowItWorks = () => {
                   </div>
                   <div className="md:inline-block">
                     <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                    <p className="text-eco-gray-dark">{step.description}</p>
+                    <p className="text-gray-800">{step.description}</p>
                   </div>
                 </div>
                 

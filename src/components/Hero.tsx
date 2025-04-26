@@ -17,7 +17,7 @@ const Hero = () => {
               We have built a purposeful AI solution with advanced software integration to assist you across electricity and water consumption, transforming complex data into actionable insights.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-black hover:bg-gray-800 text-white">
+              <Button size="lg" className="bg-black hover:bg-gray-800 text-white" onClick={() => document.getElementById('get-started')?.scrollIntoView({ behavior: 'smooth' })}>
                 Get Free Audit
               </Button>
               <Button size="lg" variant="outline" className="border-black text-black hover:bg-gray-100">

@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, Upload } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 
 const CTA = () => {
+  const { toast } = useToast();
+  
   const benefits = [
     "Comprehensive electricity and water usage analysis",
     "Monthly AI-generated optimization reports",
@@ -16,6 +19,10 @@ const CTA = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    toast({
+      title: "Audit request submitted",
+      description: "Thank you for your interest. We'll analyze your data and contact you shortly.",
+    });
     // Form submission logic would go here
   };
 
@@ -62,6 +69,7 @@ const CTA = () => {
                     type="text" 
                     placeholder="Enter your full name"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
+                    required
                   />
                 </div>
                 <div>
@@ -70,6 +78,7 @@ const CTA = () => {
                     type="email" 
                     placeholder="Enter your email"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
+                    required
                   />
                 </div>
                 <div>
@@ -78,6 +87,7 @@ const CTA = () => {
                     type="number" 
                     placeholder="e.g., 800"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
+                    required
                   />
                 </div>
                 <div>
@@ -86,6 +96,7 @@ const CTA = () => {
                     type="number" 
                     placeholder="e.g., 150"
                     className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
+                    required
                   />
                 </div>
                 <div>
@@ -103,7 +114,7 @@ const CTA = () => {
                       <div className="flex text-sm text-white/90">
                         <label htmlFor="file-upload" className="relative cursor-pointer rounded-md font-medium text-white hover:text-white/90">
                           <span>Upload a file</span>
-                          <input id="file-upload" name="file-upload" type="file" className="sr-only" accept=".pdf,.jpg,.jpeg,.png" />
+                          <input id="file-upload" name="file-upload" type="file" className="sr-only" accept=".pdf,.jpg,.jpeg,.png" required />
                         </label>
                         <p className="pl-1">or drag and drop</p>
                       </div>
@@ -111,7 +122,7 @@ const CTA = () => {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full bg-white text-black hover:bg-gray-100">
+                <Button type="submit" className="w-full bg-white text-black hover:bg-gray-100">
                   Request Free Audit
                 </Button>
               </form>

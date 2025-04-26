@@ -1,1 +1,5 @@
-project_id = "qvmcoqjjjzlrnswytwlw"
+
+project_id = "perplexity-chat"
+
+[functions.perplexity-chat]
+verify_jwt = false

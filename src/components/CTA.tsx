@@ -100,14 +100,17 @@ const CTA = () => {
               </div>
 
               <div className="bg-white/10 p-6 rounded-xl backdrop-blur-sm">
-                <h3 className="text-xl font-bold mb-4">Monthly Subscription Benefits</h3>
-                <ul className="space-y-2 mb-6">
+                <h3 className="text-xl font-bold mb-4 text-white">Monthly Subscription Benefits</h3>
+                <ul className="space-y-2 mb-6 text-white/90">
                   <li>• Detailed monthly AI analysis reports</li>
                   <li>• Custom optimization strategies</li>
                   <li>• Real-time usage monitoring</li>
                   <li>• Cost prediction and budgeting tools</li>
                 </ul>
-                <Button variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button 
+                  variant="outline" 
+                  className="border-white text-white hover:bg-white/20 hover:text-white"
+                >
                   Learn More About Subscription
                 </Button>
               </div>
@@ -145,10 +148,10 @@ const CTA = () => {
                     onValueChange={setAuditType}
                     required
                   >
-                    <SelectTrigger className="bg-white/20 border-white/30 text-white">
+                    <SelectTrigger className="bg-white/20 border-white/30 text-white placeholder:text-white/50">
                       <SelectValue placeholder="Select audit type" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white text-black">
                       <SelectItem value="electricity">Electricity Usage</SelectItem>
                       <SelectItem value="water">Water Usage</SelectItem>
                       <SelectItem value="both">Both</SelectItem>

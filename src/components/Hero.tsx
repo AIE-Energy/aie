@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Zap, Droplet, Search } from 'lucide-react';
@@ -70,7 +69,7 @@ const Hero = () => {
                       <Droplet className="h-8 w-8 text-black p-1.5 bg-white rounded-full mr-3" />
                       <div>
                         <p className="text-sm font-medium">Water Consumption</p>
-                        <h4 className="text-xl font-bold">38 Gallons</h4>
+                        <h4 className="text-xl font-bold">144 L</h4>
                       </div>
                     </div>
                     <div className="text-green-600 text-sm font-medium">

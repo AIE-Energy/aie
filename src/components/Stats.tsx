@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -15,13 +14,13 @@ const Stats = () => {
   ];
 
   const waterData = [
-    { name: 'Mon', usage: 35 },
-    { name: 'Tue', usage: 42 },
-    { name: 'Wed', usage: 38 },
-    { name: 'Thu', usage: 40 },
-    { name: 'Fri', usage: 45 },
-    { name: 'Sat', usage: 52 },
-    { name: 'Sun', usage: 32 },
+    { name: 'Mon', usage: 132.5 },
+    { name: 'Tue', usage: 158.9 },
+    { name: 'Wed', usage: 143.8 },
+    { name: 'Thu', usage: 151.4 },
+    { name: 'Fri', usage: 170.3 },
+    { name: 'Sat', usage: 196.8 },
+    { name: 'Sun', usage: 121.1 },
   ];
 
   return (
@@ -75,7 +74,7 @@ const Stats = () => {
           <Card className="shadow-lg border-0">
             <CardContent className="pt-6">
               <h3 className="font-bold text-xl mb-2">Water Consumption</h3>
-              <p className="text-eco-gray-dark mb-4">Daily water usage (gallons)</p>
+              <p className="text-eco-gray-dark mb-4">Daily water usage (liters)</p>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart
@@ -99,7 +98,7 @@ const Stats = () => {
               <div className="mt-4 flex items-center justify-between">
                 <div>
                   <p className="text-sm text-eco-gray-dark">Average</p>
-                  <p className="font-bold text-xl">40.6 gal</p>
+                  <p className="font-bold text-xl">153.5 L</p>
                 </div>
                 <div>
                   <p className="text-sm text-eco-gray-dark">Total Savings</p>

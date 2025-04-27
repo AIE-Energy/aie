@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
+      <TooltipProvider delayDuration={200}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />

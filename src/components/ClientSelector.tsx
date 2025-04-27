@@ -61,25 +61,27 @@ const ClientSelector = ({ onClientSelect, selectedClientId }: ClientSelectorProp
         // Get user details for each client
         const userIds = userRoles.map(role => role.user_id);
         
-        // Use the correct type for the response
-        const { data: userData, error: userError } = await supabase.auth.admin.listUsers({
-          perPage: 100
-        }) as { data: AdminUsersResponse, error: any };
+        // Instead of using admin.listUsers which requires admin privileges,
+        // let's fetch from user_roles and get emails from a profiles table
+        // This is a workaround since we can't access auth.users directly from client
+        const { data: userProfiles, error: profilesError } = await supabase
+          .from('user_roles')
+          .select('user_id, users:user_id(email)')
+          .in('user_id', userIds)
+          .eq('role', 'client');
 
-        if (userError) {
-          console.error("Error fetching user details:", userError);
-          toast.error("Failed to fetch client details");
+        if (profilesError) {
+          console.error("Error fetching client profiles:", profilesError);
+          toast.error("Failed to fetch client profiles");
           setLoading(false);
           return;
         }
 
-        // Filter and map the users that have client role
-        const clientUsers = userData.users
-          .filter(user => userIds.includes(user.id))
-          .map(user => ({
-            id: user.id,
-            email: user.email || 'Unknown email'
-          }));
+        // Map the user profiles to Client objects
+        const clientUsers = userProfiles.map(profile => ({
+          id: profile.user_id,
+          email: profile.users?.email || 'Unknown email'
+        }));
 
         setClients(clientUsers);
       } catch (error) {

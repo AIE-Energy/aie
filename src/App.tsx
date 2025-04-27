@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import OwnerDashboard from "./pages/OwnerDashboard";
 import ClientDashboard from "./pages/ClientDashboard";
+import Stats from "./pages/Stats";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/owner-dashboard" element={<OwnerDashboard />} />
             <Route path="/client-dashboard" element={<ClientDashboard />} />
+            <Route path="/stats" element={<Stats />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

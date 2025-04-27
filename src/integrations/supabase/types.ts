@@ -48,6 +48,74 @@ export type Database = {
         }
         Relationships: []
       }
+      client_metrics: {
+        Row: {
+          created_at: string
+          electricity_savings_percentage: number | null
+          electricity_usage: number | null
+          id: string
+          measurement_date: string
+          report_id: string
+          water_savings_percentage: number | null
+          water_usage: number | null
+        }
+        Insert: {
+          created_at?: string
+          electricity_savings_percentage?: number | null
+          electricity_usage?: number | null
+          id?: string
+          measurement_date: string
+          report_id: string
+          water_savings_percentage?: number | null
+          water_usage?: number | null
+        }
+        Update: {
+          created_at?: string
+          electricity_savings_percentage?: number | null
+          electricity_usage?: number | null
+          id?: string
+          measurement_date?: string
+          report_id?: string
+          water_savings_percentage?: number | null
+          water_usage?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_metrics_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "client_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_reports: {
+        Row: {
+          description: string | null
+          file_path: string | null
+          id: string
+          title: string
+          uploaded_at: string
+          user_id: string
+        }
+        Insert: {
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          title: string
+          uploaded_at?: string
+          user_id: string
+        }
+        Update: {
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          title?: string
+          uploaded_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       subscription_inquiries: {
         Row: {
           additional_info: string | null

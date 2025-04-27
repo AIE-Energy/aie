@@ -5,18 +5,19 @@ import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { FileIcon, DownloadIcon, LogOutIcon } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LogOutIcon } from 'lucide-react';
 import { toast } from "sonner";
+import ReportUpload from '@/components/ReportUpload';
+import MetricsForm from '@/components/MetricsForm';
+import MetricsChart from '@/components/MetricsChart';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
-  const [reports, setReports] = useState([
-    { id: 1, name: "Energy Efficiency Report - Q1 2023", date: "2023-03-15", type: "PDF" },
-    { id: 2, name: "Water Usage Analysis - Q2 2023", date: "2023-06-20", type: "PDF" },
-    { id: 3, name: "Resource Optimization Plan", date: "2023-08-05", type: "PDF" },
-  ]);
+  const [reports, setReports] = useState([]);
+  const [selectedReport, setSelectedReport] = useState(null);
+  const [metrics, setMetrics] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const Dashboard = () => {
         return;
       }
       setUser(data.session.user);
+      fetchReports();
     };
     
     checkUser();
@@ -46,15 +48,44 @@ const Dashboard = () => {
     };
   }, [navigate]);
 
+  const fetchReports = async () => {
+    const { data, error } = await supabase
+      .from('client_reports')
+      .select('*')
+      .order('uploaded_at', { ascending: false });
+
+    if (error) {
+      toast.error('Failed to fetch reports');
+      return;
+    }
+
+    setReports(data);
+  };
+
+  const fetchMetrics = async (reportId) => {
+    const { data, error } = await supabase
+      .from('client_metrics')
+      .select('*')
+      .eq('report_id', reportId)
+      .order('measurement_date', { ascending: true });
+
+    if (error) {
+      toast.error('Failed to fetch metrics');
+      return;
+    }
+
+    setMetrics(data);
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     toast.success("Successfully logged out");
     navigate('/login');
   };
 
-  const downloadReport = (reportId) => {
-    // This would be replaced with actual download functionality
-    toast.success(`Downloading report #${reportId}`);
+  const handleReportSelect = (report) => {
+    setSelectedReport(report);
+    fetchMetrics(report.id);
   };
 
   if (!user) {
@@ -78,58 +109,71 @@ const Dashboard = () => {
           </Button>
         </div>
 
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Welcome back!</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>
-              Here you can access all the resource monitoring reports we've created for you.
-              These reports provide insights into your energy and water usage, along with
-              recommendations for optimization and cost savings.
-            </p>
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="reports" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="reports">Reports</TabsTrigger>
+            <TabsTrigger value="upload">Upload Report</TabsTrigger>
+            {selectedReport && <TabsTrigger value="metrics">Add Metrics</TabsTrigger>}
+          </TabsList>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Your Reports</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Report Name</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead className="w-[100px]">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {reports.map((report) => (
-                  <TableRow key={report.id}>
-                    <TableCell>
-                      <FileIcon size={20} className="text-blue-500" />
-                    </TableCell>
-                    <TableCell className="font-medium">{report.name}</TableCell>
-                    <TableCell>{report.date}</TableCell>
-                    <TableCell>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="flex items-center gap-1"
-                        onClick={() => downloadReport(report.id)}
-                      >
-                        <DownloadIcon size={16} />
-                        Download
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+          <TabsContent value="reports">
+            <div className="grid gap-6">
+              {reports.map((report) => (
+                <Card key={report.id} className="cursor-pointer hover:shadow-md transition-shadow"
+                      onClick={() => handleReportSelect(report)}>
+                  <CardHeader>
+                    <CardTitle>{report.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-gray-600">{report.description}</p>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Uploaded: {new Date(report.uploaded_at).toLocaleDateString()}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+
+              {reports.length === 0 && (
+                <Card>
+                  <CardContent className="py-8 text-center text-gray-500">
+                    No reports uploaded yet. Use the Upload Report tab to add your first report.
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="upload">
+            <Card>
+              <CardHeader>
+                <CardTitle>Upload New Report</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ReportUpload />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {selectedReport && (
+            <TabsContent value="metrics">
+              <div className="grid gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Add Metrics for {selectedReport.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <MetricsForm
+                      reportId={selectedReport.id}
+                      onSuccess={() => fetchMetrics(selectedReport.id)}
+                    />
+                  </CardContent>
+                </Card>
+
+                {metrics.length > 0 && <MetricsChart data={metrics} />}
+              </div>
+            </TabsContent>
+          )}
+        </Tabs>
       </div>
 
       <Footer />

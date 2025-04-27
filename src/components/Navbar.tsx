@@ -62,6 +62,9 @@ const Navbar = () => {
           <Link to="/contact" className="text-gray-800 hover:text-black transition-colors cursor-pointer">
             Contact Us
           </Link>
+          <Link to="/login" className="text-gray-800 hover:text-black transition-colors cursor-pointer">
+            Client Portal
+          </Link>
         </div>
 
         {/* Mobile Navigation */}
@@ -90,6 +93,9 @@ const Navbar = () => {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/contact" className="w-full">Contact Us</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/login" className="w-full">Client Portal</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

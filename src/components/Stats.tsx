@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from 'recharts';
 
 const Stats = () => {
   const energyData = [
@@ -21,6 +22,14 @@ const Stats = () => {
     { name: 'Fri', usage: 170.3 },
     { name: 'Sat', usage: 196.8 },
     { name: 'Sun', usage: 121.1 },
+  ];
+
+  const industryAverages = [
+    { name: 'Warehousing', energy: 7.2, water: 180, yourEnergy: 5.1, yourWater: 153 },
+    { name: 'Schools', energy: 6.8, water: 210, yourEnergy: 5.6, yourWater: 165 },
+    { name: 'Healthcare', energy: 9.5, water: 245, yourEnergy: 7.8, yourWater: 195 },
+    { name: 'Retail', energy: 5.2, water: 120, yourEnergy: 4.5, yourWater: 110 },
+    { name: 'Offices', energy: 4.8, water: 95, yourEnergy: 3.9, yourWater: 85 },
   ];
 
   return (
@@ -104,6 +113,45 @@ const Stats = () => {
                   <p className="text-sm text-eco-gray-dark">Total Savings</p>
                   <p className="font-bold text-xl text-eco-green">8%</p>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* Industry Averages Section */}
+        <div className="mt-16">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Industry Comparisons</h2>
+          <p className="text-center max-w-2xl mx-auto mb-8 text-eco-gray-dark">
+            See how your resource consumption compares to industry averages across different sectors
+          </p>
+          
+          <Card className="shadow-lg border-0">
+            <CardContent className="pt-6">
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={industryAverages}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis yAxisId="left" orientation="left" stroke="#1EAEDB" />
+                    <YAxis yAxisId="right" orientation="right" stroke="#4CAF50" />
+                    <Tooltip />
+                    <Legend />
+                    <Bar yAxisId="left" name="Industry Avg Energy (kWh)" dataKey="energy" fill="#1EAEDB" />
+                    <Bar yAxisId="left" name="Your Energy Usage (kWh)" dataKey="yourEnergy" fill="#0D8BBA" />
+                    <Bar yAxisId="right" name="Industry Avg Water (L)" dataKey="water" fill="#4CAF50" />
+                    <Bar yAxisId="right" name="Your Water Usage (L)" dataKey="yourWater" fill="#388E3C" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="mt-6 text-center">
+                <p className="text-eco-gray-dark">
+                  Based on average consumption data collected from various industries. 
+                  Your resource usage is consistently below industry averages, demonstrating 
+                  the effectiveness of our optimization solutions.
+                </p>
               </div>
             </CardContent>
           </Card>

@@ -21,6 +21,23 @@ interface Client {
   email: string;
 }
 
+// Define the User type that matches Supabase auth user structure
+interface User {
+  id: string;
+  email: string | null;
+  app_metadata: Record<string, any>;
+  user_metadata: Record<string, any>;
+  aud: string;
+  created_at: string;
+}
+
+// Define the AdminUsers response structure
+interface AdminUsersResponse {
+  users: User[];
+  total: number;
+  next_page_token?: string;
+}
+
 const ClientSelector = ({ onClientSelect, selectedClientId }: ClientSelectorProps) => {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,9 +61,10 @@ const ClientSelector = ({ onClientSelect, selectedClientId }: ClientSelectorProp
         // Get user details for each client
         const userIds = userRoles.map(role => role.user_id);
         
+        // Use the correct type for the response
         const { data: userData, error: userError } = await supabase.auth.admin.listUsers({
           perPage: 100
-        });
+        }) as { data: AdminUsersResponse, error: any };
 
         if (userError) {
           console.error("Error fetching user details:", userError);

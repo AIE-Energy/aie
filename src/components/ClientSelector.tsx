@@ -21,23 +21,6 @@ interface Client {
   email: string;
 }
 
-// Define the User type that matches Supabase auth user structure
-interface User {
-  id: string;
-  email: string | null;
-  app_metadata: Record<string, any>;
-  user_metadata: Record<string, any>;
-  aud: string;
-  created_at: string;
-}
-
-// Define the AdminUsers response structure
-interface AdminUsersResponse {
-  users: User[];
-  total: number;
-  next_page_token?: string;
-}
-
 const ClientSelector = ({ onClientSelect, selectedClientId }: ClientSelectorProps) => {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,29 +44,28 @@ const ClientSelector = ({ onClientSelect, selectedClientId }: ClientSelectorProp
         // Get user details for each client
         const userIds = userRoles.map(role => role.user_id);
         
-        // Instead of using admin.listUsers which requires admin privileges,
-        // let's fetch from user_roles and get emails from a profiles table
-        // This is a workaround since we can't access auth.users directly from client
-        const { data: userProfiles, error: profilesError } = await supabase
-          .from('user_roles')
-          .select('user_id, users:user_id(email)')
-          .in('user_id', userIds)
-          .eq('role', 'client');
-
-        if (profilesError) {
-          console.error("Error fetching client profiles:", profilesError);
-          toast.error("Failed to fetch client profiles");
-          setLoading(false);
-          return;
+        // Since we can't access auth.users directly from client-side,
+        // we need to fetch user emails separately through auth session or API
+        // For now, we'll use a simplified approach by fetching the auth data via service
+        const clientList: Client[] = [];
+        
+        // Process each client ID separately to get their email
+        for (const userId of userIds) {
+          try {
+            const { data: userData, error: authError } = await supabase.auth.admin.getUserById(userId);
+            
+            if (!authError && userData?.user?.email) {
+              clientList.push({
+                id: userId,
+                email: userData.user.email
+              });
+            }
+          } catch (error) {
+            console.error(`Error fetching details for user ${userId}:`, error);
+          }
         }
 
-        // Map the user profiles to Client objects
-        const clientUsers = userProfiles.map(profile => ({
-          id: profile.user_id,
-          email: profile.users?.email || 'Unknown email'
-        }));
-
-        setClients(clientUsers);
+        setClients(clientList);
       } catch (error) {
         console.error("Error fetching clients:", error);
         toast.error("Failed to fetch clients");

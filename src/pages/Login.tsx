@@ -1,44 +1,41 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import { ArrowLeft } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { login, user, role, loading } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && role) {
+      if (role === 'owner') {
+        navigate('/owner-dashboard');
+      } else if (role === 'client') {
+        navigate('/client-dashboard');
+      }
+    }
+  }, [user, role, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.success("Login successful!");
-      navigate('/dashboard');
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("An unexpected error occurred during login.");
-    } finally {
-      setLoading(false);
-    }
+    await login(email, password);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -94,9 +91,8 @@ const Login = () => {
               <Button 
                 type="submit" 
                 className="w-full bg-black hover:bg-gray-800 text-white" 
-                disabled={loading}
               >
-                {loading ? 'Logging in...' : 'Login'}
+                Login
               </Button>
             </CardFooter>
           </form>

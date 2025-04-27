@@ -6,17 +6,34 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import ClientSelector from './ClientSelector';
 
-const ReportUpload = () => {
+interface ReportUploadProps {
+  onSuccess?: () => void;
+}
+
+const ReportUpload = ({ onSuccess }: ReportUploadProps) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [selectedClientId, setSelectedClientId] = useState<string | undefined>();
+  const [selectedClientEmail, setSelectedClientEmail] = useState<string>('');
   const [loading, setLoading] = useState(false);
+
+  const handleClientSelect = (clientId: string, clientEmail: string) => {
+    setSelectedClientId(clientId);
+    setSelectedClientEmail(clientEmail);
+  };
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) {
       toast.error('Please select a file to upload');
+      return;
+    }
+
+    if (!selectedClientId) {
+      toast.error('Please select a client');
       return;
     }
 
@@ -42,20 +59,24 @@ const ReportUpload = () => {
 
       if (uploadError) throw uploadError;
 
-      // Create report record with user_id
+      // Create report record with client_id
       const { error: insertError } = await supabase.from('client_reports').insert({
         title,
         description,
         file_path: filePath,
-        user_id: userId // Add the user ID to satisfy the database requirement
+        user_id: userId,
+        client_id: selectedClientId
       });
 
       if (insertError) throw insertError;
 
-      toast.success('Report uploaded successfully!');
+      toast.success(`Report uploaded successfully for ${selectedClientEmail}!`);
       setTitle('');
       setDescription('');
       setFile(null);
+      setSelectedClientId(undefined);
+      setSelectedClientEmail('');
+      onSuccess?.();
     } catch (error) {
       console.error('Error:', error);
       toast.error('Failed to upload report');
@@ -66,6 +87,13 @@ const ReportUpload = () => {
 
   return (
     <form onSubmit={handleUpload} className="space-y-4">
+      <div>
+        <Label htmlFor="client">Select Client</Label>
+        <ClientSelector 
+          onClientSelect={handleClientSelect} 
+          selectedClientId={selectedClientId}
+        />
+      </div>
       <div>
         <Label htmlFor="title">Report Title</Label>
         <Input

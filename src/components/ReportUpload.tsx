@@ -20,6 +20,15 @@ const ReportUpload = () => {
       return;
     }
 
+    // Check if user is authenticated
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData?.session?.user) {
+      toast.error('You must be logged in to upload reports');
+      return;
+    }
+
+    const userId = sessionData.session.user.id;
+
     setLoading(true);
     try {
       const fileExt = file.name.split('.').pop();
@@ -33,11 +42,12 @@ const ReportUpload = () => {
 
       if (uploadError) throw uploadError;
 
-      // Create report record
+      // Create report record with user_id
       const { error: insertError } = await supabase.from('client_reports').insert({
         title,
         description,
-        file_path: filePath
+        file_path: filePath,
+        user_id: userId // Add the user ID to satisfy the database requirement
       });
 
       if (insertError) throw insertError;

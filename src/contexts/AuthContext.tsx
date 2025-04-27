@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setUser(data.session.user);
           const userRole = await checkUserRole();
           setRole(userRole);
+          await ensureProfileExists(data.session.user);
         }
       } catch (error) {
         console.error('Error checking user session:', error);
@@ -45,6 +46,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setUser(session.user);
           const userRole = await checkUserRole();
           setRole(userRole);
+          await ensureProfileExists(session.user);
         } else {
           setUser(null);
           setRole(null);
@@ -59,6 +61,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
   }, []);
+
+  const ensureProfileExists = async (user: any) => {
+    if (!user) return;
+    
+    // Check if profile exists
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+    
+    // If profile doesn't exist, create it
+    if (!profile) {
+      await supabase
+        .from('profiles')
+        .insert({
+          id: user.id,
+          email: user.email,
+          updated_at: new Date().toISOString()
+        });
+    }
+  };
 
   const checkUserRole = async (): Promise<UserRole> => {
     try {
@@ -95,6 +119,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(data.user);
       const userRole = await checkUserRole();
       setRole(userRole);
+      await ensureProfileExists(data.user);
       
       toast.success("Login successful!");
     } catch (error) {

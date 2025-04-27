@@ -41,31 +41,31 @@ const ClientSelector = ({ onClientSelect, selectedClientId }: ClientSelectorProp
           return;
         }
 
-        // Get user details for each client
-        const userIds = userRoles.map(role => role.user_id);
+        const clientsList: Client[] = [];
         
-        // Since we can't access auth.users directly from client-side,
-        // we need to fetch user emails separately through auth session or API
-        // For now, we'll use a simplified approach by fetching the auth data via service
-        const clientList: Client[] = [];
-        
-        // Process each client ID separately to get their email
-        for (const userId of userIds) {
+        // For each user ID, we need to fetch their email
+        for (const roleData of userRoles) {
           try {
-            const { data: userData, error: authError } = await supabase.auth.admin.getUserById(userId);
+            const { data: userData, error: userError } = await supabase
+              .from('profiles')
+              .select('email')
+              .eq('id', roleData.user_id)
+              .single();
             
-            if (!authError && userData?.user?.email) {
-              clientList.push({
-                id: userId,
-                email: userData.user.email
+            if (!userError && userData && userData.email) {
+              clientsList.push({
+                id: roleData.user_id,
+                email: userData.email
               });
+            } else {
+              console.log(`No profile found for user ID: ${roleData.user_id}`);
             }
           } catch (error) {
-            console.error(`Error fetching details for user ${userId}:`, error);
+            console.error(`Error fetching profile for user ${roleData.user_id}:`, error);
           }
         }
 
-        setClients(clientList);
+        setClients(clientsList);
       } catch (error) {
         console.error("Error fetching clients:", error);
         toast.error("Failed to fetch clients");

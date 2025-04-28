@@ -53,12 +53,9 @@ const Navbar = () => {
           >
             How it Works
           </button>
-          <button 
-            onClick={() => scrollToSection('stats')} 
-            className="text-gray-800 hover:text-black transition-colors cursor-pointer"
-          >
+          <Link to="/stats" className="text-gray-800 hover:text-black transition-colors cursor-pointer">
             Statistics
-          </button>
+          </Link>
           <Link to="/contact" className="text-gray-800 hover:text-black transition-colors cursor-pointer">
             Contact Us
           </Link>
@@ -88,8 +85,8 @@ const Navbar = () => {
               <DropdownMenuItem onSelect={() => scrollToSection('how-it-works')}>
                 How it Works
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => scrollToSection('stats')}>
-                Statistics
+              <DropdownMenuItem asChild>
+                <Link to="/stats" className="w-full">Statistics</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/contact" className="w-full">Contact Us</Link>

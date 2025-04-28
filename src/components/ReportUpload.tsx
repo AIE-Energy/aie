@@ -21,7 +21,7 @@ const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
   const [description, setDescription] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [clientId, setClientId] = useState<string>('');
-  const [clients, setClients] = useState<Client[]>([]);
+  const [clients, setClients] = useState<Array<Client>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { user } = useAuth();
 

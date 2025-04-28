@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +25,7 @@ const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchClients();
   }, []);
 
@@ -88,7 +88,7 @@ const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
           description: description || null,
           file_path: filePath,
           client_id: clientId,
-          user_id: user.id // Add the missing user_id field
+          user_id: user.id
         });
 
       if (dbError) {

@@ -5,9 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ReportUploadProps {
   onSuccess: () => void;
+}
+
+interface Client {
+  id: string;
+  email: string;
 }
 
 const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
@@ -15,8 +21,9 @@ const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
   const [description, setDescription] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [clientId, setClientId] = useState<string>('');
-  const [clients, setClients] = useState<{id: string, email: string}[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
 
   React.useEffect(() => {
     fetchClients();
@@ -50,7 +57,7 @@ const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!title || !file || !clientId) {
+    if (!title || !file || !clientId || !user) {
       toast.error('Please fill out all required fields');
       return;
     }
@@ -80,7 +87,8 @@ const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
           title,
           description: description || null,
           file_path: filePath,
-          client_id: clientId
+          client_id: clientId,
+          user_id: user.id // Add the missing user_id field
         });
 
       if (dbError) {

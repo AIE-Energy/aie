@@ -17,12 +17,12 @@ interface Client {
 }
 
 const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [clientId, setClientId] = useState<string>('');
   const [clients, setClients] = useState<Client[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const { user } = useAuth();
 
   useEffect(() => {

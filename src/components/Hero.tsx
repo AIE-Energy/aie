@@ -9,38 +9,35 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative">
         <div className="grid md:grid-cols-2 gap-6 items-center">
           <div className="relative z-10">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3">
               <span className="text-black">Stop Watching Your Profits</span>
               <br />Disappear Into Your Energy Bills
             </h1>
-            <p className="text-base md:text-lg mb-6 text-gray-800 max-w-md">
+            <p className="text-sm md:text-base mb-4 text-gray-800 max-w-md">
               Our AI-powered platform helps business owners cut electricity and water costs by up to 30% with zero upfront investment and minimal setup time.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div>
               <Button size="lg" className="bg-black hover:bg-gray-800 text-white" onClick={() => document.getElementById('get-started')?.scrollIntoView({ behavior: 'smooth' })}>
                 Get Free Audit
               </Button>
-              <Button size="lg" variant="outline" className="border-black text-black hover:bg-gray-100">
-                Learn More
-              </Button>
             </div>
 
-            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="flex items-center">
-                <DollarSign className="h-4 w-4 text-green-600 mr-1.5" />
-                <span className="text-xs md:text-sm">Cost Reduction</span>
+                <DollarSign className="h-3 w-3 text-green-600 mr-1.5" />
+                <span className="text-xs">Cost Reduction</span>
               </div>
               <div className="flex items-center">
-                <Zap className="h-4 w-4 text-amber-500 mr-1.5" />
-                <span className="text-xs md:text-sm">Energy Savings</span>
+                <Zap className="h-3 w-3 text-amber-500 mr-1.5" />
+                <span className="text-xs">Energy Savings</span>
               </div>
               <div className="flex items-center">
-                <Droplet className="h-4 w-4 text-blue-500 mr-1.5" />
-                <span className="text-xs md:text-sm">Water Optimization</span>
+                <Droplet className="h-3 w-3 text-blue-500 mr-1.5" />
+                <span className="text-xs">Water Optimization</span>
               </div>
               <div className="flex items-center">
-                <Search className="h-4 w-4 text-black mr-1.5" />
-                <span className="text-xs md:text-sm">Free Audit</span>
+                <Search className="h-3 w-3 text-black mr-1.5" />
+                <span className="text-xs">Free Audit</span>
               </div>
             </div>
           </div>

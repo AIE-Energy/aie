@@ -29,7 +29,7 @@ const Navbar = () => {
             <span className="text-black text-2xl font-bold">AIE</span>
           </Link>
           <div className="hidden md:flex text-gray-700 text-sm ml-2">
-            AI-Powered Resource Monitoring
+            The AI Energy Optimizer
           </div>
         </div>
 

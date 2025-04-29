@@ -59,11 +59,11 @@ const Hero = () => {
                       <Zap className="h-8 w-8 text-amber-500 p-1.5 bg-white rounded-full mr-3" />
                       <div>
                         <p className="text-sm font-medium">Monthly Electricity Cost</p>
-                        <h4 className="text-xl font-bold">$4,250 <span className="text-sm text-green-600 font-normal">-18%</span></h4>
+                        <h4 className="text-xl font-bold">R24,850 <span className="text-sm text-green-600 font-normal">-18%</span></h4>
                       </div>
                     </div>
                     <div className="text-green-600 text-sm font-medium">
-                      $935 saved
+                      R5,460 saved
                     </div>
                   </div>
                 </div>
@@ -74,11 +74,11 @@ const Hero = () => {
                       <Droplet className="h-8 w-8 text-blue-500 p-1.5 bg-white rounded-full mr-3" />
                       <div>
                         <p className="text-sm font-medium">Water Usage Cost</p>
-                        <h4 className="text-xl font-bold">$1,850 <span className="text-sm text-green-600 font-normal">-12%</span></h4>
+                        <h4 className="text-xl font-bold">R10,750 <span className="text-sm text-green-600 font-normal">-12%</span></h4>
                       </div>
                     </div>
                     <div className="text-green-600 text-sm font-medium">
-                      $252 saved
+                      R1,465 saved
                     </div>
                   </div>
                 </div>

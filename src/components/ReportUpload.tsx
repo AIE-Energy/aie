@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,14 +6,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useAuth } from '@/contexts/AuthContext';
 
-interface ReportUploadProps {
-  onSuccess: () => void;
-}
-
-// Define the Client interface separately to avoid recursive type definitions
+// Define the Client interface outside of component
 interface Client {
   id: string;
   email: string;
+}
+
+interface ReportUploadProps {
+  onSuccess: () => void;
 }
 
 const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
@@ -22,7 +21,7 @@ const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
   const [description, setDescription] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [clientId, setClientId] = useState<string>('');
-  const [clients, setClients] = useState<Array<Client>>([]);
+  const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { user } = useAuth();
 

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ interface ReportUploadProps {
   onSuccess: () => void;
 }
 
+// Define the Client interface separately to avoid recursive type definitions
 interface Client {
   id: string;
   email: string;
@@ -20,8 +22,7 @@ const ReportUpload: React.FC<ReportUploadProps> = ({ onSuccess }) => {
   const [description, setDescription] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [clientId, setClientId] = useState<string>('');
-  // Explicitly define the type for clients to avoid excessive type instantiation
-  const [clients, setClients] = useState<Client[]>([]);
+  const [clients, setClients] = useState<Array<Client>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { user } = useAuth();
 
